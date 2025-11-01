@@ -3,13 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="" />
-    <title>Expense Tracker API</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>{% block title %}Expense Tracker{% endblock %}</title>
 </head>
-<body>
-    <header>built using python and sqlalchemy</header>
-    {% block body %}
-
-    {% endblock %}
+<body class="{% block body_class %}{% endblock %}">
+    <header class="app-header">
+        <nav class="nav-bar">
+            <a class="brand" href="{{ url_for('home') }}">ExpenseTracker</a>
+            <div class="nav-actions">
+                {% if session.get("username") %}
+                    <span class="nav-username">Hi, {{ session["username"] }} 👋</span>
+                    <a class="btn btn-small btn-ghost" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    <a class="btn btn-small btn-accent" href="{{ url_for('logout') }}">Logout</a>
+                {% else %}
+                    <a class="btn btn-small btn-ghost" href="{{ url_for('home') }}">Log in</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+    <main class="main-content">
+        {% block body %}{% endblock %}
+    </main>
+    <footer class="app-footer">
+        <p>Built with Flask, SQLAlchemy &amp; love.</p>
+    </footer>
 </body>
 </html>

@@ -1,18 +1,77 @@
 {% extends "base.html" %}
 
+{% block title %}Welcome · Expense Tracker{% endblock %}
+{% block body_class %}page-landing{% endblock %}
+
 {% block body %}
+<section class="hero">
+    <div class="hero__content">
+        <h1>Own your spending story.</h1>
+        <p class="subtitle">Track purchases, understand habits, and keep your budget honest. Sign in to pick up where you left off or create a new account in seconds.</p>
+        <ul class="feature-list">
+            <li>🔒 Secure personal vault for every user</li>
+            <li>📊 Clear breakdowns across groceries, leisure, utilities, and more</li>
+            <li>⚡ Instant insights the moment you log an expense</li>
+        </ul>
+    </div>
 
-<div class="container">
-    <h1>Welcome</h1>
-    <form action="">
-        <input type="text" name="username" placeholder="username" />
-        <input type="text" name="password" placeholder="password" />
+    <div class="auth-card">
+        <div class="auth-card__switcher">
+            <button type="button" class="switch-btn active" data-mode="login">Login</button>
+            <button type="button" class="switch-btn" data-mode="register">Register</button>
+        </div>
+        <form id="auth-form"
+              class="auth-form"
+              method="post"
+              action="{{ url_for('login') }}"
+              data-login-url="{{ url_for('login') }}"
+              data-register-url="{{ url_for('register') }}">
+            {% if error %}
+                <div class="alert alert-error">{{ error }}</div>
+            {% endif %}
+            <label class="form-field">
+                <span>Username</span>
+                <input type="text" name="username" placeholder="jane_doe" required>
+            </label>
+            <label class="form-field">
+                <span>Password</span>
+                <input type="password" name="password" placeholder="••••••••" required>
+            </label>
+            <input id="submit-btn" class="btn btn-primary" type="submit" value="Log in">
+            <p class="form-note" id="form-note">No account yet? Register in one tap.</p>
+        </form>
+    </div>
+</section>
 
-        <input type="submit" value="Login" class="btn btn-login" />
-        <input type="button" value="Register" class="btn btn-login" />
+<section class="testimonials">
+    <article class="testimonial-card">
+        <h3>"Budgeting finally makes sense."</h3>
+        <p>“ExpenseTracker helps me stay ahead of bills and puts every purchase in perspective. The categories keep things organized without the headache.”</p>
+        <span class="author">— Alex, small business owner</span>
+    </article>
+    <article class="testimonial-card">
+        <h3>"Simple, fast, and secure."</h3>
+        <p>“I love how quickly I can log expenses from my phone. The app keeps everything synced and ready when I sit down to review my month.”</p>
+        <span class="author">— Priya, freelance designer</span>
+    </article>
+</section>
 
-    </form>
-</div>
+<script>
+    const form = document.getElementById('auth-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const note = document.getElementById('form-note');
+    const switchers = document.querySelectorAll('.switch-btn');
 
+    function setMode(mode) {
+        const isLogin = mode === 'login';
+        form.action = isLogin ? form.dataset.loginUrl : form.dataset.registerUrl;
+        submitBtn.value = isLogin ? 'Log in' : 'Create account';
+        note.textContent = isLogin ? 'No account yet? Register in one tap.' : 'Already have an account? Switch back to log in.';
+        switchers.forEach(btn => btn.classList.toggle('active', btn.dataset.mode === mode));
+    }
 
+    switchers.forEach(btn => {
+        btn.addEventListener('click', () => setMode(btn.dataset.mode));
+    });
+</script>
 {% endblock %}

@@ -1,9 +1,42 @@
 {% extends "base.html" %}
 
+{% block title %}Dashboard · Expense Tracker{% endblock %}
+{% block body_class %}page-dashboard{% endblock %}
+
 {% block body %}
-<div class="container">
-    <h1>Welcome, {{username}}!</h1>
-    <p>This is the Expense Tracker API</p>
-    <a href="" class="btn btn-logout"></a>
-</div>
+<section class="dashboard-hero">
+    <div>
+        <h1>Welcome back, {{ username }}.</h1>
+        <p>Here’s a quick pulse on your spending. Add expenses to see live category insights.</p>
+    </div>
+    <div class="dashboard-cta">
+        <a href="{{ url_for('logout') }}" class="btn btn-ghost">Log out</a>
+    </div>
+</section>
+
+<section class="stats-grid">
+    <article class="stat-card">
+        <span class="label">This month</span>
+        <strong class="value">$0.00</strong>
+        <span class="hint">Create an expense to track totals.</span>
+    </article>
+    <article class="stat-card">
+        <span class="label">Top category</span>
+        <strong class="value">—</strong>
+        <span class="hint">Your most active category appears here.</span>
+    </article>
+    <article class="stat-card">
+        <span class="label">Entries logged</span>
+        <strong class="value">0</strong>
+        <span class="hint">Start logging to fill up your history.</span>
+    </article>
+</section>
+
+<section class="table-card">
+    <header class="table-card__header">
+        <h2>Recent expenses</h2>
+        <button class="btn btn-primary" type="button" disabled>Add expense</button>
+    </header>
+    <p class="empty-state">You don’t have any expenses yet. When you add them, they’ll show here with date, category, and totals.</p>
+</section>
 {% endblock %}
